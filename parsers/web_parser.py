@@ -5,6 +5,7 @@ import re
 from config import URL, HEADERS
 
 
+# Нормализует строку, удаляя лишние символы
 def normalize(s):
     s = s.replace('\n', ' ')
     while s.find('  ') != -1:
@@ -12,6 +13,8 @@ def normalize(s):
     return s
 
 
+# Функция получения ссылки на страницу расписания группы. Предусмотрено, что группы может не быть
+# или формат номера будет неверный
 def get_link(group_id):
     if not re.match(r'^[А-Я]{1,4}[0-9]{1,2}-[0-9]{2,3}[БАМ]?$', group_id):
         return False, 'Неверный формат номера группы. Должно быть, например, ИБМ6-12Б или Э4-33 и тп'
@@ -28,10 +31,7 @@ def get_link(group_id):
     return False, 'Что-то пошло не так, попробуйте позже!'
 
 
-def get_link_ics(link):
-    pass
-
-
+# Функция получения ссылки на ics-файл с расписанием, также определяет кратность недели
 def get_ics(url):
     resp = requests.get(url, headers=HEADERS)
     ics = None
